@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "CoreMinimal.h"
 #include "GraphicsEngine.h"
+#include "../../dependencies/includes/SDL2/SDL.h"
 
 Game* Game::GetGameInstance()
 {
@@ -66,6 +67,17 @@ bool Game::Initialise()
 void Game::ProcessInput()
 {
 	//TODO process the input of the player
+	SDL_Event Event;
+
+	while (SDL_PollEvent(&Event)) {
+		switch (Event.type) {
+		case SDL_QUIT:
+			CloseGame();
+			break;
+		default:
+			break;
+		}
+	}
 	
 }
 

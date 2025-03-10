@@ -3,7 +3,9 @@
 #include "../../dependencies/includes/glew/glew.h"
 #include "CoreMinimal.h"
 
-
+//DEBUG VARIABLES
+#include "graphics/VertexArrayObject.h"
+#include "graphics/ShapeMatrices.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -27,7 +29,7 @@ bool GraphicsEngine::Initialise()
 	//set up opengl for sdl2
 	//setting the required attributes for opengl
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);// major version of open gl to use v4
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);// minor version of open gl to use v6
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);// minor version of open gl to use v4.6
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);// allow sdl to use the latest version
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);// transparency
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -101,6 +103,13 @@ void GraphicsEngine::ClearGraphics()
 void GraphicsEngine::DrawGraphics()
 {
 	//TODO draw 3d objects to the screen
+	if (TriangleVAO == nullptr) {
+		TArray<CEVertex> Vertices = CEVertex::ConvertShapeMatrix(cesm::Triangle);
+
+		TriangleVAO = new VertexArrayObject(Vertices, cesm::Triangle.Indices);
+	}
+
+	TriangleVAO->Draw();
 }
 
 void GraphicsEngine::PresentGraphics()
