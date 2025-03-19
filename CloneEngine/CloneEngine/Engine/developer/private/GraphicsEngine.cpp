@@ -103,13 +103,33 @@ void GraphicsEngine::ClearGraphics()
 void GraphicsEngine::DrawGraphics()
 {
 	//TODO draw 3d objects to the screen
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	// creating the vao
+	TArray<CEVertex> Vertices = CEVertex::ConvertShapeMatrix(cesm::Triangle);
+	
 	if (TriangleVAO == nullptr) {
+		CE_MSG_LOG("GE", "Triangle");
 		TArray<CEVertex> Vertices = CEVertex::ConvertShapeMatrix(cesm::Triangle);
 
-		TriangleVAO = new VertexArrayObject(Vertices, cesm::Triangle.Indices);
+		TriangleVAO = new VertexArrayObject (Vertices, cesm::Triangle.Indices);
 	}
 
-	TriangleVAO->Draw();
+	if (PolygonVAO == nullptr) {
+		CE_MSG_LOG("GE", "Polygon");
+		Vertices = CEVertex::ConvertShapeMatrix(cesm::Polygon);
+		
+		PolygonVAO = new VertexArrayObject(Vertices, cesm::Polygon.Indices);
+	}
+
+	//drawing the vao to the screen
+	if (TriangleVAO != nullptr) {
+		TriangleVAO->Draw();
+	}
+
+	if (PolygonVAO != nullptr) {
+		PolygonVAO->Draw();
+	}
 }
 
 void GraphicsEngine::PresentGraphics()

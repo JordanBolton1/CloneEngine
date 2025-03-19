@@ -2,7 +2,7 @@
 #include "../../dependencies/includes/glew/glew.h"
 #include "graphics/ShapeMatrices.h"
 
-VertexArrayObject::VertexArrayObject(const TArray<CEVertex>& vertexData, TArray<CEUint>& indexData)
+VertexArrayObject::VertexArrayObject(const TArray<CEVertex>& vertexData, const TArray<CEUint>& indexData)
 	: VertexData(vertexData), IndexData(indexData) 
 {
 	VaoID = VboID = EabID = 0;
@@ -25,6 +25,7 @@ VertexArrayObject::VertexArrayObject(const TArray<CEVertex>& vertexData, TArray<
 	GenerateAndSetBuffers();
 
 	//save the data in the vertex matrix to a readable format for shaders
+	//pointr to the positions in the vertex matrix
 	SetAttributePointer(0, 3, GL_FLOAT, 3 * sizeof(float), 0);
 
 	//once everything is sert clear the VAO from the VAO slot
@@ -73,7 +74,7 @@ void VertexArrayObject::GenerateAndSetBuffers()
 	glBindBuffer(GL_ARRAY_BUFFER, VboID);
 	//set the values
 	glBufferData(GL_ARRAY_BUFFER,
-		VertexData.size(),//size of the buffer
+		VertexData.size() * sizeof(CEVertex),//size of the buffer
 		VertexData.data(),//the data to use in the buffer
 		GL_STATIC_DRAW);
 
@@ -86,7 +87,7 @@ void VertexArrayObject::GenerateAndSetBuffers()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EabID);
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-		IndexData.size(),
+		IndexData.size() * sizeof (CEUint),
 		IndexData.data(),
 		GL_STATIC_DRAW);
 }
@@ -104,7 +105,7 @@ TArray<CEVertex> CEVertex::ConvertShapeMatrix(ShapeMatrices Shape)
 	TArray<CEVertex> VertexArray;
 
 	//loop every 3 positons since we know a vertex is made up of 3 numbers (x, y ,z)
-	for (CEUint i = 0; 1 < Shape.Positions.size(); i += 3) {
+	for (CEUint i = 0; i < Shape.Positions.size(); i += 3) {
 		//assign the number based on the index + its relevant value
 		glm::vec3 vPosition = glm::vec3(Shape.Positions[i], Shape.Positions[i + 1], Shape.Positions[i + 2]);
 

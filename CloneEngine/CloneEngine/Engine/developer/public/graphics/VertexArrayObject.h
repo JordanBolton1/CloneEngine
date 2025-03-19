@@ -16,7 +16,7 @@ struct CEVertex {
 
 class VertexArrayObject {
 public:
-	VertexArrayObject(const TArray<CEVertex>& vertexData, TArray<CEUint>& indexData);
+	VertexArrayObject(const TArray<CEVertex>& vertexData, const TArray<CEUint>& indexData);
 	~VertexArrayObject();
 
 	// save the vertex data into a format that id readable by opengl shaders, that format is called an attribute pointer
