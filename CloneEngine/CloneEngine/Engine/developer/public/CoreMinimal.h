@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <string>
 
 //defining a macro , anything after the second space will replace the macro
 			//macro						//compiler version
@@ -16,3 +17,6 @@ using TArray = std::vector<T>;
 
 //at compile time replace all intances of CEUint with unsigned int
 typedef unsigned int CEUint;
+
+//at compile time replace all intances of CEString with std::string
+typedef std::string CEString;
